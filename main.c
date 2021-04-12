@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
- 
-int main()
+#include <string.h>
+
+int main(int argc, char *argv[])
 {
-    FILE *iniFile = fopen("ini1.txt","r");
+    FILE *iniFile = fopen(argv[1],"r");
     char slowo[30];
+    char task [62];
+    strcpy(task,argv[2]);
     while(fgets(slowo, sizeof slowo, iniFile)!=NULL)
     {
         printf("%s",slowo);
@@ -32,5 +35,8 @@ int main()
         }
     }
     
+    
+
+
     fclose(iniFile);
 }
