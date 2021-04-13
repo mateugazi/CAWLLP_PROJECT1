@@ -24,9 +24,10 @@ int main(int argc, char *argv[])
 
     //printf("task : %s %s",taskSection, taskKey);
     bool goodSection = false;
-
+    bool endSearch = false;
     while(fgets(slowo, sizeof slowo, iniFile)!=NULL)
     {
+        if(endSearch)break;
         switch (slowo[0])
         {
         //new section
@@ -38,7 +39,11 @@ int main(int argc, char *argv[])
             }
             else
             {
-                goodSection = false;
+                if(goodSection)
+                {
+                    printf("Failed to find key %s in section %s",taskKey,taskSection);
+                    endSearch = true;
+                }
             }
 
             break;
@@ -57,6 +62,7 @@ int main(int argc, char *argv[])
                 if(!strcmp(key,taskKey))
                 {
                     printf("%s", value);
+                    endSearch = true;
                 }
             }
             
@@ -70,7 +76,10 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    
+    if(!goodSection)
+    {
+        printf("Failed to find section %s",taskSection);
+    }
     
 
 
