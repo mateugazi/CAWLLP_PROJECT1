@@ -53,23 +53,24 @@ int main(int argc, char *argv[])
 
     strcpy(taskKey,ptr);
 
-    ptr = strtok(task2,delim);
+    char task2Key[100];
     char task2Section[10000];
     char tmp2[100] = "[";
+    if(task2!=NULL)
+    {
+    ptr = strtok(task2,delim);
+    
     strcat(tmp2,ptr);
-
     strcpy(task2Section,tmp2);
     strcat(task2Section,"]\n");
     ptr = strtok(NULL,delim);
-    char task2Key[100];
-
     strcpy(task2Key,ptr);
-
+    }
     //printf("task : %s %s",taskSection, taskKey);
     //printf("task : %s %s",task2Section, task2Key);
     int goodSection = 0;
-    bool endSearch = false;
-    bool found = false;
+    int foundSections = 0;
+    int found = 0;
 
     while(fgets(slowo, size, iniFile)!=NULL)
     {
@@ -105,12 +106,14 @@ int main(int argc, char *argv[])
                     result->name = malloc(size);
                     strcpy(result->name, slowo);
                     goodSection = 1;
+                    foundSections++;
                 }
                 else if(task2Section!=NULL && !strcmp(slowo, task2Section))
                 {
                     result2->name = malloc(size);
                     strcpy(result2->name, slowo);
                     goodSection = 2;
+                    foundSections++;
                 }
                 else{
                     goodSection = 0;
@@ -164,7 +167,7 @@ int main(int argc, char *argv[])
                     strcpy(result->key, key);
                     strcpy(result->value, value);
                     //printf("Founded value: %s", value);
-                    found = true;
+                    found++;
                 }
                 if(task2Key!=NULL && !strcmp(key,task2Key))
                 {
@@ -174,7 +177,7 @@ int main(int argc, char *argv[])
                     strcpy(result2->key, key);
                     strcpy(result2->value, value);
                     //printf("Founded value2: %s", value);
-                    found = true;
+                    found++;
                 }
                 
             }
@@ -188,7 +191,7 @@ int main(int argc, char *argv[])
                 break;
         }
     }
-    if(!goodSection)
+    if(foundSections==0)
     {
         printf("Failed to find section %s",taskSection);
     }
@@ -197,6 +200,12 @@ int main(int argc, char *argv[])
     
     if(!strcmp(argv[2], "expression"))
     {
+        if(found!=2)
+        {
+            printf("failed to find key");
+        }
+        else{
+
         bool string = false;
         bool string2 = false;
         int num = 0;
@@ -242,6 +251,8 @@ int main(int argc, char *argv[])
             
         }else if (!string && !string2)
         {
+            long long x = 0;
+            x = num * num2;
             //printf("testing %d %d", num, num2);
             switch(expression[0])
             {
@@ -252,7 +263,7 @@ int main(int argc, char *argv[])
                     printf("%d",num-num2);
                     break;
                 case '*':
-                    printf("%d",num*num2);
+                    printf("%d",x);
                     break;
                 case '/':
                     printf("%d",num/num2);
@@ -265,8 +276,9 @@ int main(int argc, char *argv[])
         else{
             printf("invalid expression");
         }
+        }        
     }
-    else if(found){
+    else if(found==1){
         printf("%s", result->name);
         printf("%s\n", result->key);
 
@@ -275,4 +287,5 @@ int main(int argc, char *argv[])
     }
     
     fclose(iniFile);
+    return 0;
 }
