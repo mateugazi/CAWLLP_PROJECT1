@@ -113,9 +113,14 @@ int main(int argc, char *argv[])
                     result2->name = malloc(size);
                     strcpy(result2->name, slowo);
                     goodSection = 2;
-                    foundSections++;
+                    foundSections+=10;
                 }
                 else{
+                    if(goodSection==1)
+                    {
+                        if(found == 0)
+                            printf("Failed to find key %s in section %s", taskKey, taskSection);
+                    }
                     goodSection = 0;
                 }
                 // else
@@ -200,11 +205,6 @@ int main(int argc, char *argv[])
     
     if(!strcmp(argv[2], "expression"))
     {
-        if(found!=2)
-        {
-            printf("failed to find key");
-        }
-        else{
 
         bool string = false;
         bool string2 = false;
@@ -275,7 +275,6 @@ int main(int argc, char *argv[])
         }
         else{
             printf("invalid expression");
-        }
         }        
     }
     else if(found==1){
