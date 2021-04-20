@@ -1,10 +1,10 @@
 [section1]
-key1 = value1
-key2 = value2
-key3 = value3
+key1 = 10
+key2 = 20
+key3 = 30
 
 ; comment
 [section2]
-key4 = value4
-key5 = value5
-key6 = value6
+key4 = 45
+key5 = 55
+key6 = 65
